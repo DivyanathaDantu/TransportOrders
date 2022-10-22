@@ -4,8 +4,8 @@ import org.json.simple.parser.ParseException;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.TreeMap;
 
 public class UserStory2 extends FlightDetails{
     public static HashMap<Integer, HashMap<String, Integer>> flightsData;
@@ -30,6 +30,7 @@ public class UserStory2 extends FlightDetails{
                     System.out.println("order: " + order + " , flightNumber: " + flight + " , departure: "
                             + departure + " , arrival: " + destination + " , day: "
                             + flightsData.get(flight).get(destination));
+                    return;
                 }
             }
         }
@@ -46,11 +47,15 @@ public class UserStory2 extends FlightDetails{
         }
         JSONObject jsonObject = (JSONObject)obj;
         initializeData();
+        TreeMap<String,String> orders = new TreeMap<String, String>();
         for (Object key : jsonObject.keySet()) {
             if (jsonObject.get(key) instanceof JSONObject) {
                 JSONObject order = (JSONObject) jsonObject.get(key);
-                validateAndPrintItineraries((String) key, (String) order.get("destination"));
+                orders.put((String) key, (String) order.get("destination"));
             }
+        }
+        for (String order_id : orders.keySet()) {
+            validateAndPrintItineraries(order_id, orders.get(order_id));
         }
         //System.out.println(orders);
     }

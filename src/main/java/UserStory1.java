@@ -1,14 +1,11 @@
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Map.Entry;
 
 public class UserStory1 extends FlightDetails {
 
   public void print_flight_data() {
     System.out.println("print_flight_data....");
     FlightDetails.initialize_map();
-    HashMap<String, HashMap<Integer, Integer>> map = FlightDetails.get_flights_data();
+    HashMap<Integer, HashMap<String, Integer>> map = FlightDetails.get_flights_data();
 
     // FUnction to sort based on Flight numbers
     // Comparator<Entry<String, HashMap<Integer, Integer>>> valueComparator = new Comparator<Entry<String, HashMap<Integer, Integer>>>() { 
@@ -25,11 +22,11 @@ public class UserStory1 extends FlightDetails {
 
 
     String departure = "YUL";
-    for (String destination : map.keySet()) 
+    for (Integer flight : map.keySet())
     {
-        HashMap<Integer, Integer> day_flightno_map = map.get(destination);
-        for (Integer day : day_flightno_map.keySet()) {
-          System.out.println("Flight: " + day_flightno_map.get(day) + ", departure: " + departure + ", arrival: " + destination + ", day: " + day);
+        HashMap<String, Integer> destinationDayMap = map.get(flight);
+        for (String destination : destinationDayMap.keySet()) {
+          System.out.println("Flight: " + flight + ", departure: " + departure + ", arrival: " + destination + ", day: " + destinationDayMap.get(destination));
         }
     }
   }

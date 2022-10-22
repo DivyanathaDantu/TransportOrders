@@ -8,10 +8,31 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class UserStory2 extends FlightDetails{
-    private static void validateAndPrintIterneraries(JSONObject order){
-        FlightDetails.initialize_map();
-        HashMap<Integer, HashMap<String, Integer>> flights_data = FlightDetails.get_flights_data();
+    public static HashMap<Integer, HashMap<String, Integer>> flightsData;
+    public static HashMap<Integer, Integer> flightDetailsWithCapacity = new HashMap<Integer, Integer>();
 
+    private static void initializeData(){
+        FlightDetails.initialize_map();
+        flightsData = FlightDetails.get_flights_data();
+        for (Integer flight : flightsData.keySet()){
+            flightDetailsWithCapacity.put(flight, FlightDetails.get_flights_capacity());
+        }
+    }
+    private static void validateAndPrintItineraries(String order, String order_destination){
+        String departure = "YUL";
+        for (Integer flight : flightsData.keySet()) {
+            HashMap<String, Integer> destinationDayMap = map.get(flight);
+            for (String destination : destinationDayMap.keySet()) {
+                if(destination.equals(order_destination)){
+                    if(flightDetailsWithCapacity.get(flight) == null) continue;
+                    else if (flightDetailsWithCapacity.get(flight) == 1) flightDetailsWithCapacity.remove(flight);
+                    else flightDetailsWithCapacity.replace(flight, flightDetailsWithCapacity.get(flight) - 1);
+                    System.out.println("order: " + order + " , flightNumber: " + flight + " , departure: "
+                            + departure + " , arrival: " + destination + " , day: "
+                            + flightsData.get(flight).get(destination));
+                }
+            }
+        }
     }
     public static void main(String args[]){
         JSONParser parser = new JSONParser();
@@ -24,14 +45,13 @@ public class UserStory2 extends FlightDetails{
             System.out.println("File not found");
         }
         JSONObject jsonObject = (JSONObject)obj;
-        ArrayList<JSONObject> orders = new ArrayList<>();
-
+        initializeData();
         for (Object key : jsonObject.keySet()) {
             if (jsonObject.get(key) instanceof JSONObject) {
                 JSONObject order = (JSONObject) jsonObject.get(key);
-                validateAndPrintIterneraries(order);
+                validateAndPrintItineraries((String) key, (String) order.get("destination"));
             }
         }
-        System.out.println(orders);
+        //System.out.println(orders);
     }
 }

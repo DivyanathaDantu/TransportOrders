@@ -2,15 +2,10 @@ import java.util.HashMap;
 
 public class FlightDetails {
 
-  int capacity = 20;
+  public static final int capacity = 20;
   static HashMap<Integer, HashMap<String, Integer>> map = new HashMap<Integer, HashMap<String, Integer>>();
 
   public FlightDetails() {}
-
-  public FlightDetails(int capacity, HashMap<Integer, HashMap<String, Integer>> map1) {
-    this.capacity = capacity;
-    map = map1;
-  }
 
   public static void initialize_map() {
 
@@ -52,8 +47,8 @@ public class FlightDetails {
 
   }
 
-  public int get_flights_capacity() {
-    return this.capacity;
+  public static int get_flights_capacity() {
+    return capacity;
   }
 
   public static HashMap<Integer, HashMap<String, Integer>> get_flights_data() {
